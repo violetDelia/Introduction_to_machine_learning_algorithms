@@ -37,7 +37,7 @@ def set_lable(data):
 def show_results(data,x_column,y_column,color_column,w,b):
     data["function_value"] = data[x_column]*w[0]+data[y_column]*w[1]+b
     print(data[["function_value","lable"]])
-
+    
     
 
 
