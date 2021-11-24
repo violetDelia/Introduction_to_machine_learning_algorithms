@@ -7,6 +7,7 @@ class Perceptron:
     learning_rate = 1
 
     '''设置学习率'''
+
     def set_learning_rate(self, learning_rate):
         self.learning_rate = learning_rate
 
@@ -18,10 +19,14 @@ class Perceptron:
         b = 0
         '''寻找到的标记'''
         is_find = False
+        '''
+        可以设置最大迭代次数,有可能没有那条线,算不出结果
+        '''
         while not is_find:
             is_find = True
             '''
-            遍历每个训练点，如果全都满足规则，跳出循环（可以设置为一定比例满足或者损失函数小于某个值）
+            遍历每个训练点，如果全都满足规则，跳出循环
+            （可以设置为一定比例满足或者损失函数小于某个值）
             '''
             for i in range(m):
                 x = X[i].reshape(1, -1)
