@@ -62,16 +62,16 @@ if __name__ == "__main__":
     model = Perceptron()
     model.train(train_x.values, train_y.values)
     print(model.learning_rate)
+    show_results(
+        data, data.columns[0], data.columns[1], data["lable"], model.w, model.b)
+    predict_y = model.predict(test_x.values)
+    print(get_accuracy(predict_y, test_y.values))
     #记录信息
     '''
     train_x.to_csv("2.监督式学习算法基础\Iris_compute_info\\train_x.csv")
     train_y.to_csv("2.监督式学习算法基础\Iris_compute_info\\train_y.csv")
     test_x.to_csv("2.监督式学习算法基础\Iris_compute_info\\test_x.csv")
     test_y.to_csv("2.监督式学习算法基础\Iris_compute_info\\test_y.csv")
-    show_results(
-        data, data.columns[0], data.columns[1], data["lable"], model.w, model.b)
-    predict_y = model.predict(test_x.values)
-    print(get_accuracy(predict_y, test_y.values))
     for i in range(len(model.compute_info)):
         filename = "2.监督式学习算法基础\Iris_compute_info\第{0}次迭代.csv".format(i)
         model.compute_info[i].to_csv(filename
