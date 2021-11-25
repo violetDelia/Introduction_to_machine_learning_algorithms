@@ -19,7 +19,15 @@ def get_data():
     X_train = process_features(X_train)
     X_test = process_features(X_test)
     return X_train,X_test,y_train,y_test
-    
+def show_scatter(X_train, y_train, y_train_predict,X_test, y_test, y_predict,column = 1):
+    plt.figure(1)
+    plt.subplot(211)
+    plt.scatter(X_train[:, column], y_train)
+    plt.scatter(X_train[:, column],y_train_predict, color='red')
+    plt.subplot(212)
+    plt.scatter(X_test[:, column], y_test)
+    plt.scatter(X_test[:, column], y_predict, color='red')
+    plt.show()
 
 if __name__ == "__main__":
    X_train,X_test,y_train,y_test= get_data()
@@ -29,4 +37,6 @@ if __name__ == "__main__":
    MES = model.mean_squared_error(y_test, y_predict)
    R2 = model.R2_score(y_test, y_predict)
    print(MES, R2)
+   show_scatter(X_train, y_train,model.predict(X_train),X_test, y_test, y_predict)
+   
 
