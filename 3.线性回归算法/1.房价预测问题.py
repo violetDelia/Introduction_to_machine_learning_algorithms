@@ -34,7 +34,7 @@ if __name__ == "__main__":
    model = LinearRegression()
    model.train(X_train,y_train)
    y_predict = model.predict(X_test)
-   MES = model.mean_squared_error(y_test, y_predict)
+   MES = model.MSE(y_test, y_predict)
    R2 = model.R2_score(y_test, y_predict)
    print(MES, R2)
    show_scatter(X_train, y_train,model.predict(X_train),X_test, y_test, y_predict)

@@ -37,11 +37,11 @@ if __name__ == "__main__":
     model = LinearRegression()
     model.train(X_train, y_train)
     y_predict = model.predict(X_test)
-    MES_test = model.mean_squared_error(y_test, y_predict)
+    MES_test = model.MSE(y_test, y_predict)
     R2_test = model.R2_score(y_test, y_predict)
     print("测试集的均方误差和决定系数: ", MES_test, R2_test)
     y_train_line = model.predict(X_train)
-    MES_train = model.mean_squared_error(y_train, y_train_line)
+    MES_train = model.MSE(y_train, y_train_line)
     R2_train = model.R2_score(y_train, y_train_line)
     print("训练集的均方误差和决定系数: ", MES_train, R2_train)
     show_scatter(X_train, y_train, y_train_line,
