@@ -24,7 +24,6 @@ class StepwiseRegression(LinearRegression):
         p_value = f.cdf(F, m, m)
         return p_value > confidence_interval
 
-
     def backward_f_test(self, MSE_A, MSE_min, m, confidence_interval=0.95):
         '''
         向后逐步的F检验
@@ -40,7 +39,7 @@ class StepwiseRegression(LinearRegression):
         y_distances = y - X.dot(w)
         return y_distances.T.dot(y_distances)[0, 0]
 
-    def forward_selection(self, X, y):
+    def forward_selection(self, X, y,confidence_interval=0.95):
         '''
         向前逐步回归
         '''
@@ -57,15 +56,14 @@ class StepwiseRegression(LinearRegression):
                 if MSE_j < MSE_min:
                     MSE_min, j_min = MSE_j, j
             # F检验
-            if self.forward_f_test(MSE_A, MSE_min, m):
+            if self.forward_f_test(MSE_A, MSE_min, m,confidence_interval=confidence_interval):
                 A.append(j_min)
                 C.remove(j_min)
             else:
                 break
-        self.w = self.fit(X[:, A], y)
         self.A = A
 
-    def backward_selection(self, X, y):
+    def backward_selection(self, X, y,confidence_interval=0.95):
         '''
         向后逐步回归
         '''
@@ -84,23 +82,23 @@ class StepwiseRegression(LinearRegression):
                 if MSE_j < MSE_min:
                     MSE_min, j_min = MSE_j, j
             # F检验
-            if self.backward_f_test(MSE_A, MSE_min, m):
+            if self.backward_f_test(MSE_A, MSE_min, m, confidence_interval=confidence_interval):
                 A.remove(j_min)
                 C.append(j_min)
             else:
                 break
-                
-        self.w = self.fit(X[:, A], y)
         self.A = A
 
-    def train(self, X, y, type=StepwiseRegressionType.forward_selection):
+    def train(self, X, y, type=StepwiseRegressionType.forward_selection,confidence_interval = 0.95):
         '''
         需要注明是向前还是向后回归
         '''
         if type == self.StepwiseRegressionType.forward_selection:
-            self.forward_selection(X, y)
+            self.forward_selection(X, y,confidence_interval=confidence_interval)
+            self.w = self.fit(X[:, self.A], y)
         if type == self.StepwiseRegressionType.backward_selection:
-            self.backward_selection(X, y)
+            self.backward_selection(X, y,confidence_interval=confidence_interval)
+            self.w = self.fit(X[:, self.A], y)
 
     def predict(self, X):
         return X[:, self.A].dot(self.w)

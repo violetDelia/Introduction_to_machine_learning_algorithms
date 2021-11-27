@@ -16,11 +16,11 @@ def process_features(X):
     return X
 
 
-def show_scatter(X_train, y_train, y_train_predict,X_test, y_test, y_predict,column = 1):
+def show_scatter(X_train, y_train, y_train_predict, X_test, y_test, y_predict, column=1):
     plt.figure(1)
     plt.subplot(211)
     plt.scatter(X_train[:, column], y_train)
-    plt.scatter(X_train[:, column],y_train_predict, color='red')
+    plt.scatter(X_train[:, column], y_train_predict, color='red')
     plt.subplot(212)
     plt.scatter(X_test[:, column], y_test)
     plt.scatter(X_test[:, column], y_predict, color='red')
