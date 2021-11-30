@@ -1,7 +1,7 @@
 import numpy as np
 import time
 from sklearn.preprocessing import PolynomialFeatures
-from LinearRegression import LinearRegression
+from LinearRegression.LinearRegression import LinearRegression
 import matplotlib.pyplot as plt
 
 
@@ -14,12 +14,10 @@ def generate_sample(m):
 
 if __name__ == "__main__":
     X, y = generate_sample(100)
-    X_ploy = PolynomialFeatures(degree=2).fit_transform(X)
     model = LinearRegression()
-    model.train(X_ploy, y)
+    model.train(X, y)
     line_x = np.linspace(X.min(), X.max(), 100).reshape(100, 1)
-    line_x_poly = PolynomialFeatures(degree=2).fit_transform(line_x)
-    line_y = model.predict(line_x_poly)
+    line_y = model.predict(line_x)
     plt.scatter(X, y)
     plt.plot(line_x, line_y, color='red')
     plt.show()

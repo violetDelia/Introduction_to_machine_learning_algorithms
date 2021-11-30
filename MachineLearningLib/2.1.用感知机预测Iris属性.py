@@ -1,5 +1,5 @@
 import numpy as np
-from Perceptron import Perceptron
+from Perceptron.Perceptron import Perceptron
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -7,7 +7,7 @@ import sklearn.model_selection
 
 
 def load_data(remove_column):
-    filepath = "2.监督式学习算法基础\Iris.csv"
+    filepath = "MachineLearningLib\datasets\Iris\Iris.csv"
     data = pd.read_csv(filepath)
     '''
     去掉没用的列
@@ -59,14 +59,16 @@ if __name__ == "__main__":
     # show_scatter(data,data.columns[0],data.columns[1],data["lable"])
     train_x, test_x, train_y, test_y = get_train_and_test_data(
         data[[data.columns[0], data.columns[1]]], data["lable"], 0.3, 5)
-    model = Perceptron()
-    model.train(train_x.values, train_y.values)
-    print(model.learning_rate)
+    model = Perceptron(w_start=[55.9, -80.9], b_start=50)
+    model.train(train_x.values, train_y.values,
+                model.SoulutionType.normal_nonexact)
     show_results(
         data, data.columns[0], data.columns[1], data["lable"], model.w, model.b)
     predict_y = model.predict(test_x.values)
-    print(get_accuracy(predict_y, test_y.values))
-    #记录信息
+    print(predict_y.shape)
+    print(type(test_y.values))
+    print(model.get_accuracy(predict_y, test_y.values))
+    # 记录信息
     '''
     train_x.to_csv("2.监督式学习算法基础\Iris_compute_info\\train_x.csv")
     train_y.to_csv("2.监督式学习算法基础\Iris_compute_info\\train_y.csv")

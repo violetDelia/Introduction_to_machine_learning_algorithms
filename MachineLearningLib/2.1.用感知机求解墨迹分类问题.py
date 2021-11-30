@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 import sklearn.model_selection
-from Perceptron import Perceptron
+from Perceptron.Perceptron import Perceptron
 import numpy as np
 
 def get_data():
@@ -39,5 +39,5 @@ if __name__ == "__main__":
     model.train(train_x.values, train_y.values)
     show_results(data,"x","y","lable",model.w, model.b)
     predict_y = model.predict(test_x.values)
-    print(get_accuracy(predict_y, test_y.values))
+    print(model.get_accuracy(predict_y, test_y.values))
 
