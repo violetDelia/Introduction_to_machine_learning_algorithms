@@ -1,4 +1,5 @@
 import numpy as np
+from enum import Enum
 
 
 class LinearRegressionMixin:
@@ -17,7 +18,7 @@ class LinearRegressionMixin:
         '''
         return np.linalg.inv(X.T.dot(X)).dot(X.T).dot(y)
 
-    def _fit_normal(self, X_train, y_train):
+    def _fit_linear_normal(self, X_train, y_train):
         '''
         使用正则化方程直接求得最优解
 

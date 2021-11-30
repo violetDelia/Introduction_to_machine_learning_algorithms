@@ -10,13 +10,14 @@ class LinearRegression(LinearRegressionMixin, DataVisualization, Preprocessing, 
     '''
     线性回归模型
     '''
+
     class SoulutionType(Enum):
         '''
         求解类型：
 
         normal: 正规方程求解
         '''
-        normal = 1
+        normal = 0
         '''
         正规方程求解
         '''
@@ -42,22 +43,36 @@ class LinearRegression(LinearRegressionMixin, DataVisualization, Preprocessing, 
         多项式处理
         '''
 
+    class RegressionType(Enum):
+        '''
+        回归类型
+
+        LinearRegression: 普通线性回归
+        RigidRegression: 岭回归
+        '''
+        LinearRegression = 0
+        '''
+        普通线性回归
+        '''
+        RigidRegression = 1
+        '''
+        岭回归
+        '''
+
     def __init__(self,):
         pass
 
-    def train(self, X_train, y_train, type=SoulutionType.normal, processingType=ProcessingType.multinomial,
-              weights=None):
+    def _preprocessing(self, X_train, y_train, processingType, weights):
         '''
-        训练模型
+        数据集预处理
 
-        参数：
+        参数:
             X_train: 训练用的样本,是一个(m,n)的数组.
             y_train: 标签向量,是一个(m,1)的向量
-            type: 求解类型
+            soulutionType: 求解类型
             processingType: 数据处理类型
             weights: 权重向量
         '''
-
         if weights is not None:
             X_train = self._process_weight_to_features(X_train, weights)
         if processingType == self.ProcessingType.not_process:
@@ -67,8 +82,26 @@ class LinearRegression(LinearRegressionMixin, DataVisualization, Preprocessing, 
         if processingType == self.ProcessingType.multinomial:
             X_processed = self._process_feature_to_multinomial_features(
                 X_train)
-        if type == self.SoulutionType.normal:
-            self._fit_normal(X_processed, y_train)
+        y_processed = y_train
+        return X_processed, y_processed
+
+    def train(self, X_train, y_train, RegressionType=RegressionType.LinearRegression,
+              soulutionType=SoulutionType.normal, processingType=ProcessingType.multinomial,
+              weights=None):
+        '''
+        训练模型
+
+        参数：
+            X_train: 训练用的样本,是一个(m,n)的数组.
+            y_train: 标签向量,是一个(m,1)的向量
+            soulutionType: 求解类型
+            processingType: 数据处理类型
+            weights: 权重向量
+        '''
+        X_processed, y_processed = self._preprocessing(
+            X_train, y_train, processingType, weights)
+        if RegressionType == self.RegressionType.LinearRegression and soulutionType == self.SoulutionType.normal:
+            self._fit_linear_normal(X_processed, y_processed)
 
     def predict(self, X, processingType=ProcessingType.multinomial, weights=None):
         '''
@@ -78,13 +111,6 @@ class LinearRegression(LinearRegressionMixin, DataVisualization, Preprocessing, 
             X: 预测用的特征集
             weights: 权重向量
         '''
-        if weights is not None:
-            X = self._process_weight_to_features(X, weights)
-        if processingType == self.ProcessingType.not_process:
-            X_processed = X
-        if processingType == self.ProcessingType.normal:
-            X_processed = self._add_onevector_to_features(X)
-        if processingType == self.ProcessingType.multinomial:
-            X_processed = self._process_feature_to_multinomial_features(
-                X)
+        X_processed, y_processed = self._preprocessing(
+            X, None, processingType, weights)
         return X_processed.dot(self.w)
